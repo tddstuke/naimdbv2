@@ -1,8 +1,8 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useState } from "react";
+import NavBar from "./components/Header";
 
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return <NavBar />;
 }
 
 export default App;

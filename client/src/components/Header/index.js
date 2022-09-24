@@ -59,7 +59,7 @@ function NavBar() {
           >
             <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
               <li className="text-white hover:text-indigo-200">
-                <a href="javascript:void(0)">Home</a>
+                <a href="/">Home</a>
               </li>
               <li className="text-white hover:text-indigo-200">
                 <a href="javascript:void(0)">Dashboard</a>
@@ -80,7 +80,7 @@ function NavBar() {
                 Sign in
               </a>
               <a
-                href="javascript:void(0)"
+                href="/signup"
                 className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
               >
                 Sign up
@@ -96,7 +96,7 @@ function NavBar() {
             Sign in
           </a>
           <a
-            href="javascript:void(0)"
+            href="/signup"
             className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
           >
             Sign up

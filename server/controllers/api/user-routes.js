@@ -18,12 +18,13 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const userData = await User.create({
+    const user = await User.create({
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
     });
-    res.json(userData);
+    const token = signToken(user);
+    res.json({ user, token });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -51,12 +52,6 @@ router.post("/login", (req, res) => {
 
       var token = signToken(dbUserData);
 
-      //   res.status(200).send({
-      //     id: dbUserData.id,
-      //     username: dbUserData.username,
-      //     email: dbUserData.email,
-      //     accessToken: token,
-      //   });
       res.json({
         user: dbUserData,
         token,

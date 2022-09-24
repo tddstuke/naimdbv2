@@ -13,7 +13,7 @@ const Home = () => {
   if (error) return "Error!";
 
   const movies = data.results;
-  console.log(movies);
+  //   console.log(movies);
 
   //   console.log(movies);
   return (

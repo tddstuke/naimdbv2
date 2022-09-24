@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const { User, Movie, List } = require("../../models");
+const jwt = require("jsonwebtoken");
+const config = require("../../config/auth.config");
 
 router.get("/", async (req, res) => {
   try {
@@ -25,6 +27,76 @@ router.post("/", async (req, res) => {
     console.log(error);
     res.status(500).json(error);
   }
+});
+
+router.post("/login", (req, res) => {
+  User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  })
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        res.status(400).json({ message: "No user with that email address!" });
+        return;
+      }
+
+      const validPassword = dbUserData.checkPassword(req.body.password);
+
+      if (!validPassword) {
+        res.status(400).json({ message: "Incorrect password!" });
+        return;
+      }
+
+      var token = jwt.sign({ id: dbUserData.id }, config.secret, {
+        expiresIn: 86400,
+      });
+
+      //   res.status(200).send({
+      //     id: dbUserData.id,
+      //     username: dbUserData.username,
+      //     email: dbUserData.email,
+      //     accessToken: token,
+      //   });
+      res.json({
+        user: dbUserData,
+        token,
+        message: "You are now logged in!",
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+});
+
+router.post("/logout", (req, res) => {
+  if (req.session.loggedIn) {
+    req.session.destroy(() => {
+      res.status(204).end();
+    });
+  } else {
+    res.status(404).end();
+  }
+});
+
+router.put("/:id", (req, res) => {
+  User.update(req.body, {
+    individualHooks: true,
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((dbUserData) => {
+      if (!dbUserData) {
+        res.status(404).json({ message: "No user found with this id" });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 router.delete("/:id", async (req, res) => {

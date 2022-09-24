@@ -1,7 +1,7 @@
 const User = require("./User");
 const List = require("./List");
 const Movie = require("./Movie");
-
+const Role = require("./Role");
 // Movie.belongsToMany(User, { through: List });
 
 // User.belongsToMany(Movie, { through: List });
@@ -22,4 +22,18 @@ Movie.belongsTo(User, {
   foreignKey: "user_id",
 });
 
-module.exports = { Movie, User, List };
+// Role.belongsToMany(User, {
+//   through: "user_roles",
+//   foreignKey: "roleId",
+//   otherKey: "userId",
+// });
+
+// User.belongsToMany(Role, {
+//   through: "user_roles",
+//   foreignKey: "userId",
+//   otherKey: "roleId",
+// });
+
+// ROLES = ["user", "admin", "moderator"];
+
+module.exports = { Movie, User, List, Role };

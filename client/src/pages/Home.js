@@ -17,24 +17,22 @@ const Home = () => {
 
   //   console.log(movies);
   return (
-    <main className="container">
-      <div className="flex md:justify-around flex-wrap">
-        {movies.map((movie) => (
-          <div key={movie.id} className="md:w-1/5 m-4">
-            <div className="card">
-              <div className="card-image">
-                <figure className="image is4by3">
-                  <img
-                    src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                    alt="selected movie poster"
-                  />
-                </figure>
-              </div>
+    <div className="flex max-w-full md:justify-around justify-center flex-wrap">
+      {movies.map((movie) => (
+        <div key={movie.id} className="md:w-1/5 m-4">
+          <div className="card">
+            <div className="card-image">
+              <figure className="image is4by3">
+                <img
+                  src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  alt="selected movie poster"
+                />
+              </figure>
             </div>
           </div>
-        ))}
-      </div>
-    </main>
+        </div>
+      ))}
+    </div>
   );
 };
 

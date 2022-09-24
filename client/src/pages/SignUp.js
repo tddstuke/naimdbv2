@@ -118,12 +118,12 @@ const SignUp = () => {
           </div>
         </div>
         <div className="flex items-center justify-end mt-4">
-          {/* <a
+          <a
             className="text-sm text-gray-600 underline hover:text-gray-900"
-            href="#"
+            href="/login"
           >
             Already registered?
-          </a> */}
+          </a>
           <button
             type="submit"
             className="inline-flex items-center px-4 py-1 ml-4 tracking-widest text-white transition duration-150 ease-in-out bg-gray-600 border border-transparent rounded-md active:bg-gray-900 false"

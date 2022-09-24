@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import logo from "../../assets/logo.png";
+import { AuthContext } from "../../context/Auth";
+import Auth from "../../utils/auth";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
+  const { loggedIn, setLoggedIn, me } = useContext(AuthContext);
+  console.log(loggedIn);
 
   return (
     <nav className="w-full bg-black shadow">
@@ -10,7 +14,6 @@ function NavBar() {
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <a href="javascript:void(0)">
-              {/* <h2 className="text-2xl font-bold text-white">LOGO</h2> */}
               <img src={logo} className="h-10" />
             </a>
             <div className="md:hidden">
@@ -61,9 +64,11 @@ function NavBar() {
               <li className="text-white hover:text-indigo-200">
                 <a href="/">Home</a>
               </li>
-              <li className="text-white hover:text-indigo-200">
-                <a href="javascript:void(0)">Dashboard</a>
-              </li>
+              {Auth.loggedIn && (
+                <li className="text-white hover:text-indigo-200">
+                  <a href="javascript:void(0)">Dashboard</a>
+                </li>
+              )}
               <li className="text-white hover:text-indigo-200">
                 <a href="javascript:void(0)">About US</a>
               </li>
@@ -73,34 +78,56 @@ function NavBar() {
             </ul>
 
             <div className="mt-3 space-y-2 md:hidden md:inline-block">
+              {Auth.loggedIn() ? (
+                <a
+                  onClick={Auth.logout}
+                  className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                >
+                  Sign out
+                </a>
+              ) : (
+                <>
+                  <a
+                    href="/login"
+                    className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                  >
+                    Sign in
+                  </a>
+                  <a
+                    href="/signup"
+                    className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                  >
+                    Sign up
+                  </a>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="hidden space-x-2 md:inline-block">
+          {Auth.loggedIn() ? (
+            <a
+              onClick={Auth.logout}
+              className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+            >
+              Sign out
+            </a>
+          ) : (
+            <>
               <a
                 href="javascript:void(0)"
-                className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
+                className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
               >
                 Sign in
               </a>
               <a
                 href="/signup"
-                className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
               >
                 Sign up
               </a>
-            </div>
-          </div>
-        </div>
-        <div className="hidden space-x-2 md:inline-block">
-          <a
-            href="javascript:void(0)"
-            className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
-          >
-            Sign in
-          </a>
-          <a
-            href="/signup"
-            className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
-          >
-            Sign up
-          </a>
+            </>
+          )}
         </div>
       </div>
     </nav>

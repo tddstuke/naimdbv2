@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { User, Movie, List } = require("../../models");
 const jwt = require("jsonwebtoken");
 const config = require("../../config/auth.config");
+const { signToken } = require("../../middleware/authJwt");
 
 router.get("/", async (req, res) => {
   try {
@@ -48,9 +49,7 @@ router.post("/login", (req, res) => {
         return;
       }
 
-      var token = jwt.sign({ id: dbUserData.id }, config.secret, {
-        expiresIn: 86400,
-      });
+      var token = signToken(dbUserData);
 
       //   res.status(200).send({
       //     id: dbUserData.id,

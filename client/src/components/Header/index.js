@@ -64,9 +64,9 @@ function NavBar() {
               <li className="text-white hover:text-indigo-200">
                 <a href="/">Home</a>
               </li>
-              {Auth.loggedIn && (
+              {Auth.loggedIn() && (
                 <li className="text-white hover:text-indigo-200">
-                  <a href="javascript:void(0)">Dashboard</a>
+                  <a href="/dashboard">Dashboard</a>
                 </li>
               )}
               <li className="text-white hover:text-indigo-200">
@@ -115,7 +115,7 @@ function NavBar() {
           ) : (
             <>
               <a
-                href="javascript:void(0)"
+                href="/login"
                 className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
               >
                 Sign in

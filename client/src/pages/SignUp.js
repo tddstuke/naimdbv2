@@ -31,6 +31,7 @@ const SignUp = () => {
       console.log(data.data.token);
     } catch (error) {
       console.log(error);
+      alert(error.response.data.message);
     }
 
     e.target.reset();

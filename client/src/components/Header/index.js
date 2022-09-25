@@ -95,7 +95,7 @@ function NavBar() {
                   </a>
                   <a
                     href="/signup"
-                    className="inline-block w-full px-4 py-2 text-center text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                    className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
                   >
                     Sign up
                   </a>
@@ -122,7 +122,7 @@ function NavBar() {
               </a>
               <a
                 href="/signup"
-                className="px-4 py-2 text-gray-800 bg-white rounded-md shadow hover:bg-gray-100"
+                className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
               >
                 Sign up
               </a>

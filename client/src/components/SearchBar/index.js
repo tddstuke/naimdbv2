@@ -26,7 +26,7 @@ const SearchBar = () => {
   return (
     <div className=" flex flex-col justify-center items-center bg-black">
       <form
-        className="w-full max-w-xlg"
+        className="w-full max-w-xlg px-4"
         // onSubmit={handleMovieSubmit && handleShowSubmit}
       >
         <div className="md:flex md:items-center md:justify-center mb-6 md:mr-8">

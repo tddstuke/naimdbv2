@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { fetchTrending } from "../utils/movie-service";
 import useFetch from "react-fetch-hook";
+import http from "../http-common";
 
 const key = process.env.REACT_APP_API_KEY;
 
 const Home = () => {
-  const { isLoading, error, data } = useFetch(
-    `https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`
-  );
+  //   const { isLoading, error, data } = useFetch(
+  //     `https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`
+  //     );
+  // if (isLoading) return "Loading...";
+  // if (error) return "Error!";
 
-  if (isLoading) return "Loading...";
-  if (error) return "Error!";
+  const [movies, setMovies] = useState([]);
 
-  const movies = data.results;
+  useEffect(() => {
+    const getMovie = async () => {
+      const data = await http.get("/home");
+      console.log(data.data);
+      setMovies(data.data);
+    };
+    getMovie();
+  }, []);
+
   //   console.log(movies);
 
-  //   console.log(movies);
   return (
     <div className="flex max-w-full md:justify-around justify-center flex-wrap">
       {movies.map((movie) => (

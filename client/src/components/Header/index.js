@@ -13,7 +13,7 @@ function NavBar() {
       <div className=" justify-between px-4 mx-auto md:items-center md:flex md:px-8">
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
-            <a href="javascript:void(0)">
+            <a href="/">
               <img src={logo} className="h-10" />
             </a>
             <div className="md:hidden">
@@ -70,10 +70,10 @@ function NavBar() {
                 </li>
               )}
               <li className="text-white hover:text-indigo-200">
-                <a href="javascript:void(0)">About US</a>
+                <a href="/aboutus">About US</a>
               </li>
               <li className="text-white hover:text-indigo-200">
-                <a href="javascript:void(0)">Contact US</a>
+                <a href="/contactus">Contact US</a>
               </li>
             </ul>
 

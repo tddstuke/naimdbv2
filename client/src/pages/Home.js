@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchTrending } from "../utils/movie-service";
-import useFetch from "react-fetch-hook";
+// import { fetchTrending } from "../utils/movie-service";
+// import useFetch from "react-fetch-hook";
 import http from "../http-common";
 
-const key = process.env.REACT_APP_API_KEY;
+// const key = process.env.REACT_APP_API_KEY;
 
 const Home = () => {
   //   const { isLoading, error, data } = useFetch(
@@ -15,29 +15,39 @@ const Home = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const getMovie = async () => {
+    const getMovies = async () => {
       const data = await http.get("/home");
-      console.log(data.data);
+      //   console.log(data.data);
       setMovies(data.data);
     };
-    getMovie();
+    getMovies();
   }, []);
+
+  const clickMovie = async (e) => {
+    e.preventDefault();
+    const movieId = e.target.id;
+    const data = await http.get(`/home/movieid${movieId}`);
+    console.log(data.data);
+    window.location.href = "/movieid";
+  };
 
   //   console.log(movies);
 
   return (
     <div className="flex max-w-full md:justify-around justify-center flex-wrap">
       {movies.map((movie) => (
-        <div key={movie.id} className="md:w-1/5 m-4">
-          <div className="card">
-            <div className="card-image">
-              <figure className="image is4by3">
-                <img
-                  src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                  alt="selected movie poster"
-                />
-              </figure>
-            </div>
+        <div
+          key={movie.id}
+          onClick={clickMovie}
+          className="md:w-1/5 m-4 rounded overflow-hidden md:shadow-2xl"
+        >
+          <div className="p-3 ">
+            <img
+              id={movie.id}
+              src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+              alt="selected movie poster"
+              className="rounded"
+            />
           </div>
         </div>
       ))}

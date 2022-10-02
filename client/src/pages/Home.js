@@ -43,7 +43,6 @@ const Home = () => {
 
   return (
     <>
-      <SearchBar />
       <div className="flex max-w-full md:justify-around justify-center flex-wrap">
         {movies.map((movie) => (
           <div

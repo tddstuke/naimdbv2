@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <NavBar />
-
+      <SearchBar />
       <div className="">
         <Routes>
           <Route path="/" element={<Home />} />

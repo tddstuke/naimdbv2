@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/movieid:id", async (req, res) => {
+router.get("/movieid/:id", async (req, res) => {
   try {
     console.log(req.params);
     const { data } = await FetchByID(req.params.id);

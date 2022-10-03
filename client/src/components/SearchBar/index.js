@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import http from "../../http-common";
 
 const SearchBar = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [showTitle, setShowTitle] = useState("");
+  const [movieId, setMovieId] = useState("");
+  const navigate = useNavigate();
 
   const handleMovieChange = (event) => {
     setMovieTitle(event.target.value);
@@ -13,9 +17,16 @@ const SearchBar = () => {
 
   const handleMovieSubmit = async (event) => {
     event.preventDefault();
-    await console.log(movieTitle);
+    const data = await http.get(`/home/moviename/${movieTitle}`);
+    // console.log(data.data.results[0].id);
+    setMovieId(data.data.results[0].id);
+    console.log(movieId);
     setMovieTitle("");
   };
+
+  useEffect(() => {
+    navigate(`/movieid/${movieId}`);
+  }, [movieId]);
 
   const handleShowSubmit = async (event) => {
     event.preventDefault();
@@ -45,6 +56,7 @@ const SearchBar = () => {
               onChange={handleMovieChange}
             />
           </div>
+          {/* <Link to={`/movieid/${movieId}`}> */}
           <button
             className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 md:mt-0 mt-2 md:ml-2 md:mt-0 mt-2 md:w-1/5 w-full"
             type="submit"
@@ -52,6 +64,7 @@ const SearchBar = () => {
           >
             Search
           </button>
+          {/* </Link> */}
 
           <div className="md:w-1/4">
             <label className="block text-white md:text-right mb-1 md:mb-0 pr-4">

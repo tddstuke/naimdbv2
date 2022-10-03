@@ -15,7 +15,7 @@ const SingleMovie = () => {
       setMovie(data.data);
     };
     getMovie();
-  }, []);
+  }, [movieId]);
 
   const { isLoading, data } = useFetch(
     `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${key}`

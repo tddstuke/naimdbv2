@@ -6,6 +6,7 @@ const SearchBar = () => {
   const [movieTitle, setMovieTitle] = useState("");
   const [showTitle, setShowTitle] = useState("");
   const [movieId, setMovieId] = useState("");
+  const [showId, setShowId] = useState("");
   const navigate = useNavigate();
 
   const handleMovieChange = (event) => {
@@ -20,19 +21,33 @@ const SearchBar = () => {
     const data = await http.get(`/home/moviename/${movieTitle}`);
     // console.log(data.data.results[0].id);
     setMovieId(data.data.results[0].id);
-    console.log(movieId);
+    // console.log(movieId);
     setMovieTitle("");
   };
 
   useEffect(() => {
-    navigate(`/movieid/${movieId}`);
+    if (movieId) {
+      navigate(`/movieid/${movieId}`);
+      setMovieId("");
+    }
   }, [movieId]);
 
   const handleShowSubmit = async (event) => {
     event.preventDefault();
-    await console.log(showTitle);
+    const data = await http.get(`/home/showname/${showTitle}`);
+    console.log(data.data.results[0].id);
+    setShowId(data.data.results[0].id);
+    // console.log(movieId);
     setShowTitle("");
   };
+
+  useEffect(() => {
+    if (showId) {
+      navigate(`/showid/${showId}`);
+      console.log();
+      setShowId("");
+    }
+  }, [showId]);
 
   return (
     <div className=" flex flex-col justify-center items-center bg-black">

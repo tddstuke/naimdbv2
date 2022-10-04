@@ -5,6 +5,11 @@ const {
   fetchByName,
 } = require("../../services/movie-service");
 
+const {
+  fetchByShowName,
+  FetchByShowID,
+} = require("../../services/show-service");
+
 router.get("/", async (req, res) => {
   try {
     const { data } = await fetchTrending();
@@ -25,10 +30,35 @@ router.get("/movieid/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+router.get("/showid/:id", async (req, res) => {
+  try {
+    console.log(req.params);
+    const { data } = await FetchByShowID(req.params.id);
+    console.log(data);
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 router.get("/moviename/:name", async (req, res) => {
   try {
     console.log(req.params);
     const { data } = await fetchByName(req.params.name);
+    console.log(data);
+    res.json(data);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.get("/showname/:name", async (req, res) => {
+  try {
+    console.log(req.params);
+    const { data } = await fetchByShowName(req.params.name);
     console.log(data);
     res.json(data);
   } catch (err) {

@@ -16,6 +16,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:email", async (req, res) => {
+  try {
+    const userData = await User.findOne({
+      attributes: { exclude: ["password"] },
+      where: {
+        email: req.params.email,
+      },
+    });
+    res.json(userData);
+    console.log(userData);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     const user = await User.create({

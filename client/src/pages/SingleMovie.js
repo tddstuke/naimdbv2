@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useId, useState } from "react";
+import { useParams, useRouteError } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
+import Auth from "../utils/auth";
 
 const SingleMovie = () => {
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const getMovie = async () => {
@@ -17,13 +20,49 @@ const SingleMovie = () => {
     getMovie();
   }, [movieId]);
 
-  const { isLoading, data } = useFetch(
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const data = Auth.getProfile().data.email;
+    setEmail(data);
+    console.log(email);
+  };
+  useEffect(() => {
+    const getUser = async () => {
+      const data = await http.get(`/users/${email}`);
+      setUserId(data.data.id);
+    };
+    getUser();
+  }, [email]);
+  console.log(userId);
+
+  useEffect(() => {
+    const addMovie = async () => {
+      try {
+        const data = await http.post("/movies", {
+          movie_id: movieId,
+          user_id: userId,
+        });
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    addMovie();
+    console.log("movie added");
+  }, [userId]);
+
+  const { isLoading, error, data } = useFetch(
     `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${key}`
   );
+
   if (isLoading) {
     return <div>loading...</div>;
   }
-  const stream = data.results.US.flatrate;
+  if (error) {
+    return <div>error!</div>;
+  }
+
+  const stream = data.results.US?.flatrate || null;
 
   return (
     <>
@@ -69,6 +108,16 @@ const SingleMovie = () => {
                   "Not available to stream for flatrate"}
               </li>
             </ul>
+            <div className=" flex justify-center">
+              {Auth.loggedIn() && (
+                <button
+                  className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 md:mt-0 mt-2 md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
+                  onClick={handleClick}
+                >
+                  Add Movie
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

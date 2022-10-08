@@ -28,10 +28,10 @@ Movie.init(
     //   },
     // },
 
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
+    // title: {
+    //   type: DataTypes.STRING,
+    //   // allowNull: false,
+    // },
 
     movie_id: {
       type: DataTypes.INTEGER,

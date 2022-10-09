@@ -1,5 +1,5 @@
-import React, { useEffect, useId, useState } from "react";
-import { useParams, useRouteError } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
@@ -10,22 +10,20 @@ const SingleMovie = () => {
   const [movie, setMovie] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
+  // get movie data on load
   useEffect(() => {
-    const getMovie = async () => {
-      const data = await http.get(`/home/movieid/${movieId}`);
-      console.log(data.data);
+    http.get(`/home/movieid/${movieId}`).then((data) => {
       setMovie(data.data);
-    };
-    getMovie();
-  }, [movieId]);
+    });
+    //   get user email and username from token
+    setEmail(Auth.getProfile().data.email);
+    setUsername(Auth.getProfile().data.username);
+  }, []);
 
-  const handleClick = async (e) => {
-    e.preventDefault();
-    const data = Auth.getProfile().data.email;
-    setEmail(data);
-    console.log(email);
-  };
+  // get user info using email
   useEffect(() => {
     const getUser = async () => {
       const data = await http.get(`/users/${email}`);
@@ -33,24 +31,31 @@ const SingleMovie = () => {
     };
     getUser();
   }, [email]);
+
   console.log(userId);
+  console.log(email);
+  console.log(movie);
+  console.log(username);
 
-  useEffect(() => {
-    const addMovie = async () => {
-      try {
-        const data = await http.post("/movies", {
-          movie_id: movieId,
-          user_id: userId,
-        });
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    addMovie();
-    console.log("movie added");
-  }, [userId]);
+  // add movie to users movies
+  const addMovie = async () => {
+    try {
+      const data = await http.post("/movies", {
+        movie_id: movieId,
+        user_id: userId,
+      });
+      console.log(data);
+      console.log("movie added");
+      navigate(`/dashboard/${username}`);
+      setEmail("");
+      setMovie("");
+      //   setUserId("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  // get streaming information
   const { isLoading, error, data } = useFetch(
     `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${key}`
   );
@@ -67,11 +72,7 @@ const SingleMovie = () => {
   return (
     <>
       <div className="flex max-w-full md:justify-around justify-center flex-wrap ">
-        <div
-          // key={movie.id}
-          // onClick={clickMovie}
-          className="md:w-4/5 m-4 rounded overflow-hidden md:shadow-2xl  justify-center md:flex"
-        >
+        <div className="md:w-4/5 m-4 rounded overflow-hidden md:shadow-2xl  justify-center md:flex">
           <div className="p-3 justify-center flex md:w-1/2">
             <img
               id={movie.id}
@@ -112,7 +113,8 @@ const SingleMovie = () => {
               {Auth.loggedIn() && (
                 <button
                   className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 md:mt-0 mt-2 md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
-                  onClick={handleClick}
+                  onClick={addMovie}
+                  type="button"
                 >
                   Add Movie
                 </button>

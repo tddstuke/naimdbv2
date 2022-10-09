@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import SingleMovie from "./pages/SingleMovie";
 import SingleShow from "./pages/SingleShow";
+import Dashboard from "./pages/Dashboard";
 import SearchBar from "./components/SearchBar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/movieid/:id" element={<SingleMovie />} />
           <Route path="/showid/:id" element={<SingleShow />} />
+          <Route path="/dashboard/:username" element={<Dashboard />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
         </Routes>

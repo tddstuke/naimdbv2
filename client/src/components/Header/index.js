@@ -1,12 +1,9 @@
 import React, { useState, useContext } from "react";
 import logo from "../../assets/logo.png";
-import { AuthContext } from "../../context/Auth";
 import Auth from "../../utils/auth";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
-  const { loggedIn, setLoggedIn, me } = useContext(AuthContext);
-  console.log(loggedIn);
 
   return (
     <nav className="w-full bg-black shadow">

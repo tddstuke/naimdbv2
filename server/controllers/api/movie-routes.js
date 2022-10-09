@@ -27,9 +27,9 @@ router.get("/:id", async (req, res) => {
     const data = await Movie.findOne({
       where: {
         movie_id: req.params.id,
-        user_id: req.context.id,
+        user_id: req.body.id,
       },
-      attributes: ["id", "title", "movie_id"],
+      attributes: ["id", "movie_id"],
       //   include: {model: USER, attributes: ["username"]},}
     });
     if (!data) {

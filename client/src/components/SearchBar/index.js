@@ -44,7 +44,6 @@ const SearchBar = () => {
   useEffect(() => {
     if (showId) {
       navigate(`/showid/${showId}`);
-      console.log();
       setShowId("");
     }
   }, [showId]);

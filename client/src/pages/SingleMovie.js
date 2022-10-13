@@ -22,6 +22,9 @@ const SingleMovie = () => {
     setEmail(Auth.getProfile().data.email);
     setUsername(Auth.getProfile().data.username);
     // get user info using email
+  }, []);
+
+  useEffect(() => {
     const getUser = async () => {
       try {
         const idData = await http.get(`/users/${email}`);
@@ -33,9 +36,6 @@ const SingleMovie = () => {
     };
     getUser();
   }, [email]);
-
-  //   useEffect(() => {
-  //   }, [email]);
 
   console.log(userId);
   console.log(email);

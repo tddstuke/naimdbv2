@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import http from "../http-common";
 // import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
@@ -63,14 +63,30 @@ const Dashboard = () => {
   console.log(movies.data);
 
   return (
-    <div>
-      <div>{username}</div>
-      <div>
-        {movies?.map((movie) => (
-          <div>{movie.title}</div>
+    <>
+      <h1 className="text-xl uppercase text-center mt-4">
+        {username}'s Movies
+      </h1>
+      <div className="flex max-w-full md:justify-around justify-center flex-wrap">
+        {movies.map((movie) => (
+          <div
+            key={movie.id}
+            className="md:w-1/5 m-4 rounded overflow-hidden md:shadow-2xl"
+          >
+            <Link to={`/movieid/${movie.id}`}>
+              <div className="p-3 ">
+                <img
+                  id={movie.id}
+                  src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  alt="selected movie poster"
+                  className="rounded"
+                />
+              </div>
+            </Link>
+          </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

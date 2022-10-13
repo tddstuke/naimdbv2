@@ -24,8 +24,8 @@ router.get("/:email", async (req, res) => {
         email: req.params.email,
       },
     });
-    res.json(userData);
-    console.log(userData);
+    res.json(userData.dataValues.id);
+    console.log(userData.dataValues.id);
   } catch (e) {
     console.log(e);
   }

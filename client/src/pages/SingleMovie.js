@@ -21,16 +21,21 @@ const SingleMovie = () => {
     //   get user email and username from token
     setEmail(Auth.getProfile().data.email);
     setUsername(Auth.getProfile().data.username);
-  }, []);
-
-  // get user info using email
-  useEffect(() => {
+    // get user info using email
     const getUser = async () => {
-      const data = await http.get(`/users/${email}`);
-      setUserId(data.data.id);
+      try {
+        const idData = await http.get(`/users/${email}`);
+        console.log(idData.data);
+        setUserId(idData.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getUser();
   }, [email]);
+
+  //   useEffect(() => {
+  //   }, [email]);
 
   console.log(userId);
   console.log(email);
@@ -47,9 +52,9 @@ const SingleMovie = () => {
       console.log(data);
       console.log("movie added");
       navigate(`/dashboard/${username}`);
-      setEmail("");
-      setMovie("");
-      //   setUserId("");
+      // setEmail("");
+      // setMovie("");
+      // setUserId("");
     } catch (error) {
       console.log(error);
     }

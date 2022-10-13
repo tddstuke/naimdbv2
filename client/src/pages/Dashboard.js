@@ -18,11 +18,15 @@ const Dashboard = () => {
 
   //   once email is set use it to retrieve userId
   useEffect(() => {
-    const getUser = async () => {
-      const data = await http.get(`/users/${email}`);
-      setUserId(data.data.id);
-    };
-    getUser();
+    try {
+      const getUser = async () => {
+        const data = await http.get(`/users/${email}`);
+        setUserId(data.data);
+      };
+      getUser();
+    } catch (error) {
+      console.log(error);
+    }
   }, [email]);
 
   //   retrieve movieIds using userId

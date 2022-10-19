@@ -1,0 +1,60 @@
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
+
+class Show extends Model {}
+
+Show.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "user",
+        key: "id",
+      },
+    },
+    // list_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    //   references: {
+    //     model: "list",
+    //     key: "id",
+    //   },
+    // },
+
+    // title: {
+    //   type: DataTypes.STRING,
+    //   // allowNull: false,
+    // },
+
+    show_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      // unique: true,
+    },
+
+    overview: {
+      type: DataTypes.STRING(1234),
+    },
+    poster_path: {
+      type: DataTypes.STRING,
+    },
+    tag: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    sequelize,
+    freezeTableName: true,
+    underscored: true,
+    modelName: "show",
+  }
+);
+
+module.exports = Show;

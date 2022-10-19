@@ -12,4 +12,7 @@ router.use("/dashboard", dashboardRoutes);
 const movieRoutes = require("./movie-routes");
 router.use("/movies", movieRoutes);
 
+const showRoutes = require("./show-routes");
+router.use("/shows", showRoutes);
+
 module.exports = router;

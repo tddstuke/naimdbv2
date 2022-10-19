@@ -1,21 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
+import Auth from "../utils/auth";
 
 const SingleShow = () => {
   const key = process.env.REACT_APP_API_KEY;
   const { id: showId } = useParams();
   const [show, setShow] = useState("");
+  const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const getShow = async () => {
-      const data = await http.get(`/home/showid/${showId}`);
-      console.log(data.data);
+    http.get(`/home/showid/${showId}`).then((data) => {
       setShow(data.data);
+    });
+
+    setEmail(Auth.getProfile().data.email);
+    setUsername(Auth.getProfile().data.username);
+  }, []);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const idData = await http.get(`/users/${email}`);
+        console.log(idData.data);
+        setUserId(idData.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
-    getShow();
-  }, [showId]);
+    getUser();
+  }, [email]);
+
+  console.log(showId);
+
+  const addShow = async () => {
+    try {
+      const data = await http.post("/shows", {
+        show_id: showId,
+        user_id: userId,
+      });
+      console.log(data);
+      console.log("show added");
+      navigate(`/dashboard/${username}`);
+      // setEmail("");
+      // setMovie("");
+      // setUserId("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const { isLoading, data } = useFetch(
     `https://api.themoviedb.org/3/tv/${showId}/watch/providers?api_key=${key}`
@@ -69,6 +106,17 @@ const SingleShow = () => {
                   "Not available to stream for flatrate"}
               </li>
             </ul>
+            <div className=" flex justify-center">
+              {Auth.loggedIn() && (
+                <button
+                  className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 md:mt-0 mt-2 md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
+                  onClick={addShow}
+                  type="button"
+                >
+                  Add Show
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

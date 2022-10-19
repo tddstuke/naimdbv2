@@ -10,6 +10,8 @@ const Dashboard = () => {
   const [userId, setUserId] = useState("");
   const [movieIds, setMovieIds] = useState([]);
   const [movies, setMovies] = useState([]);
+  const [showIds, setShowIds] = useState([]);
+  const [shows, setShows] = useState([]);
 
   //   get user email on load
   useEffect(() => {
@@ -36,10 +38,16 @@ const Dashboard = () => {
       const movie_ids = data.map((data) => data.movie_id);
       setMovieIds(movie_ids);
     };
-    console.log(userId);
+    const getShowIds = async () => {
+      const { data } = await http.get(`/dashboard/showids/${userId}`);
+      const show_ids = data.map((data) => data.show_id);
+      setShowIds(show_ids);
+    };
+    getShowIds();
     getMovieIds();
   }, [userId]);
 
+  console.log(showIds);
   // retrieve user movies using movieIds from TMDB
   useEffect(() => {
     const getMovies = async () => {
@@ -56,11 +64,27 @@ const Dashboard = () => {
         console.log(error);
       }
     };
-    getMovies();
-    console.log(movies);
-  }, [movieIds]);
 
-  console.log(movies.data);
+    const getShows = async () => {
+      try {
+        const data = showIds.map(async (showId) => {
+          const showData = await http.get(`dashboard/shows/${showId}`);
+          return showData.data;
+        });
+        const showArray = await Promise.all(data);
+        console.log(showArray);
+        // console.log(data);
+        setShows(showArray);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMovies();
+    getShows();
+  }, [movieIds, showIds]);
+
+  console.log(movies);
+  console.log(shows);
 
   return (
     <>
@@ -78,6 +102,26 @@ const Dashboard = () => {
                 <img
                   id={movie.id}
                   src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  alt="selected movie poster"
+                  className="rounded"
+                />
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+      <h1 className="text-xl uppercase text-center mt-4">{username}'s Shows</h1>
+      <div className="flex max-w-full md:justify-around justify-center flex-wrap">
+        {shows.map((show) => (
+          <div
+            key={show.id}
+            className="md:w-1/5 m-4 rounded overflow-hidden md:shadow-2xl"
+          >
+            <Link to={`/showid/${show.id}`}>
+              <div className="p-3 ">
+                <img
+                  id={show.id}
+                  src={`http://image.tmdb.org/t/p/w500/${show.poster_path}`}
                   alt="selected movie poster"
                   className="rounded"
                 />

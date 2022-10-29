@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import http from "../http-common";
 // import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
+import { TiDeleteOutline } from "react-icons/ti";
 
 const Dashboard = () => {
   const { username } = useParams();
@@ -108,7 +109,9 @@ const Dashboard = () => {
                 />
               </div>
             </Link>
-            <button>Remove Movie</button>
+            <div className="flex justify-center">
+              <TiDeleteOutline />
+            </div>
           </div>
         ))}
       </div>
@@ -129,7 +132,9 @@ const Dashboard = () => {
                 />
               </div>
             </Link>
-            <button>Remove Show</button>
+            <div className="flex justify-center">
+              <TiDeleteOutline />
+            </div>
           </div>
         ))}
       </div>

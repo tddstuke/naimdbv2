@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [movies, setMovies] = useState([]);
   const [showIds, setShowIds] = useState([]);
   const [shows, setShows] = useState([]);
+  const navigate = useNavigate();
 
   //   get user email on load
   useEffect(() => {
@@ -85,6 +86,33 @@ const Dashboard = () => {
     getShows();
   }, [movieIds, showIds]);
 
+  const deleteMovie = async (e) => {
+    e.preventDefault();
+    console.log(e.target.id);
+    try {
+      const data = await http.delete(`/movies/${e.target.id}/${userId}`, {
+        // movie_id: e.target.id,
+        // user_id: userId,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteShow = async (e) => {
+    e.preventDefault();
+    console.log(e.target.id);
+    try {
+      const data = await http.delete(`/shows/${e.target.id}/${userId}`, {
+        // movie_id: e.target.id,
+        // user_id: userId,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   console.log(movies);
   console.log(shows);
 
@@ -109,8 +137,8 @@ const Dashboard = () => {
                 />
               </div>
             </Link>
-            <div className="flex justify-center">
-              <TiDeleteOutline />
+            <div className="flex justify-center pb-3">
+              <TiDeleteOutline id={movie.id} onClick={deleteMovie} />
             </div>
           </div>
         ))}
@@ -132,8 +160,8 @@ const Dashboard = () => {
                 />
               </div>
             </Link>
-            <div className="flex justify-center">
-              <TiDeleteOutline />
+            <div className="flex justify-center pb-3">
+              <TiDeleteOutline id={show.id} onClick={deleteShow} />
             </div>
           </div>
         ))}

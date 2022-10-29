@@ -24,7 +24,7 @@ const SingleMovie = () => {
     // setEmail(Auth.getProfile().data.email);
     // setUsername(Auth.getProfile().data.username);
     // get user info using email
-  }, []);
+  }, [movieId]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -116,7 +116,7 @@ const SingleMovie = () => {
                   "Not available to stream for flatrate"}
               </li>
             </ul>
-            <div className=" flex justify-center">
+            <div className=" flex justify-center py-2">
               {Auth.loggedIn() && (
                 <button
                   className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 md:mt-0 mt-2 md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"

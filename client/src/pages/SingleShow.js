@@ -22,7 +22,7 @@ const SingleShow = () => {
 
     // setEmail(Auth.getProfile().data.email);
     // setUsername(Auth.getProfile().data.username);
-  }, []);
+  }, [showId]);
 
   useEffect(() => {
     const getUser = async () => {

@@ -85,11 +85,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id/:userId", async (req, res) => {
   try {
     const data = await Movie.destroy({
       where: {
-        id: req.params.id,
+        movie_id: req.params.id,
+        user_id: req.params.userId,
       },
     });
     if (!data) {

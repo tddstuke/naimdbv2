@@ -8,7 +8,10 @@ const sequelize = require("./config/connection");
 const app = express();
 const cors = require("cors");
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: [
+    "http://localhost:3000",
+    "https://agile-springs-04238.herokuapp.com/",
+  ],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };

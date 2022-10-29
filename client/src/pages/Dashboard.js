@@ -86,6 +86,7 @@ const Dashboard = () => {
     getShows();
   }, [movieIds, showIds]);
 
+  // remove movie from user's movies
   const deleteMovie = async (e) => {
     e.preventDefault();
     console.log(e.target.id);
@@ -94,11 +95,14 @@ const Dashboard = () => {
         // movie_id: e.target.id,
         // user_id: userId,
       });
+
       window.location.reload();
     } catch (error) {
       console.log(error);
     }
   };
+
+  // remove show from user's shows
   const deleteShow = async (e) => {
     e.preventDefault();
     console.log(e.target.id);
@@ -138,7 +142,11 @@ const Dashboard = () => {
               </div>
             </Link>
             <div className="flex justify-center pb-3">
-              <TiDeleteOutline id={movie.id} onClick={deleteMovie} />
+              <TiDeleteOutline
+                className="cursor-pointer"
+                id={movie.id}
+                onClick={deleteMovie}
+              />
             </div>
           </div>
         ))}
@@ -161,7 +169,11 @@ const Dashboard = () => {
               </div>
             </Link>
             <div className="flex justify-center pb-3">
-              <TiDeleteOutline id={show.id} onClick={deleteShow} />
+              <TiDeleteOutline
+                className="cursor-pointer"
+                id={show.id}
+                onClick={deleteShow}
+              />
             </div>
           </div>
         ))}

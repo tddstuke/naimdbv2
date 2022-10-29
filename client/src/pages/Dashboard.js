@@ -6,7 +6,8 @@ import Auth from "../utils/auth";
 
 const Dashboard = () => {
   const { username } = useParams();
-  const [email, setEmail] = useState("");
+  const email = Auth.getProfile().data.email;
+  // const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
   const [movieIds, setMovieIds] = useState([]);
   const [movies, setMovies] = useState([]);
@@ -15,7 +16,7 @@ const Dashboard = () => {
 
   //   get user email on load
   useEffect(() => {
-    setEmail(Auth.getProfile().data.email);
+    // setEmail(Auth.getProfile().data.email);
   }, []);
 
   //   once email is set use it to retrieve userId
@@ -107,6 +108,7 @@ const Dashboard = () => {
                 />
               </div>
             </Link>
+            <button>Remove Movie</button>
           </div>
         ))}
       </div>
@@ -127,6 +129,7 @@ const Dashboard = () => {
                 />
               </div>
             </Link>
+            <button>Remove Show</button>
           </div>
         ))}
       </div>

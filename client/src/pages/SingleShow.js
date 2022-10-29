@@ -5,12 +5,14 @@ import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
 
 const SingleShow = () => {
+  const email = Auth.getProfile().data.email;
+  const username = Auth.getProfile().data.username;
   const key = process.env.REACT_APP_API_KEY;
   const { id: showId } = useParams();
   const [show, setShow] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,8 +20,8 @@ const SingleShow = () => {
       setShow(data.data);
     });
 
-    setEmail(Auth.getProfile().data.email);
-    setUsername(Auth.getProfile().data.username);
+    // setEmail(Auth.getProfile().data.email);
+    // setUsername(Auth.getProfile().data.username);
   }, []);
 
   useEffect(() => {

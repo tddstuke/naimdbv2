@@ -5,12 +5,15 @@ import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
 
 const SingleMovie = () => {
+  //   get user email and username from token
+  const email = Auth.getProfile().data.email;
+  const username = Auth.getProfile().data.username;
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   // get movie data on load
@@ -18,9 +21,8 @@ const SingleMovie = () => {
     http.get(`/home/movieid/${movieId}`).then((data) => {
       setMovie(data.data);
     });
-    //   get user email and username from token
-    setEmail(Auth.getProfile().data.email);
-    setUsername(Auth.getProfile().data.username);
+    // setEmail(Auth.getProfile().data.email);
+    // setUsername(Auth.getProfile().data.username);
     // get user info using email
   }, []);
 
@@ -35,9 +37,9 @@ const SingleMovie = () => {
       }
     };
     getUser();
+    console.log(userId);
   }, [email]);
 
-  console.log(userId);
   console.log(email);
   console.log(movie);
   console.log(username);

@@ -1,6 +1,5 @@
 const express = require("express");
 const routes = require("./controllers");
-// const helpers = require("./utils/helper.js");
 require("dotenv").config();
 const PORT = process.env.PORT || 3001;
 const path = require("path");
@@ -19,13 +18,11 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, "public")));
-// app.use(session(sess));
 
 app.use(routes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "..", "/client/build")));
+  app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
 app.get("/*", (req, res) => {

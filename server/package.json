@@ -13,10 +13,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "heroku-postbuild": "npm run client-install && npm run client-build",
-    "client-install": "cd client && npm install",
-    "client-build": "cd client && npm run build",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "seed": "node seeders/seeds.js"
   },
   "name": "server",
   "version": "1.0.0",

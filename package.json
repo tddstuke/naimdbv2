@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
     "dev": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
-    "install": "cd server && npm i && cd ../client && npm i",
+    "install": "cd server && npm i && cd client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
     "watch": "webpack --watch --progress"
@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/tddstuke/naimdbv2/issues"
   },
-  "homepage": "https://github.com/tddstuke/naimdbv2#readme",
+  "homepage": ".",
   "dependencies": {
     "concurrently": "^7.4.0"
   },

@@ -9,8 +9,7 @@
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
-    "watch": "webpack --watch --progress",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "watch": "webpack --watch --progress"
   },
   "repository": {
     "type": "git",

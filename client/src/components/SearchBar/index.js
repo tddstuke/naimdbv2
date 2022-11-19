@@ -70,7 +70,7 @@ const SearchBar = () => {
             </div>
             {/* <Link to={`/movieid/${movieId}`}> */}
             <button
-              className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 lg:mt-0 mt-2 lg:ml-2 lg:mt-0 lg:mb-3 mt-2 lg:w-1/5 w-full"
+              className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 lg:ml-2 lg:mt-0 lg:mb-3 mt-2 lg:w-1/5 w-full"
               type="submit"
               onClick={handleMovieSubmit}
             >

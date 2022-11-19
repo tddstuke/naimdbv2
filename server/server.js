@@ -25,13 +25,12 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "./client/build/index.html"));
   });
 }
-// app.use(routes);
-else {
-  app.use(express.static(path.join(__dirname, "/client/public"))); //new code
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/build/index.html"));
-  });
-}
+app.use(routes);
+
+app.use(express.static(path.join(__dirname, "/client/public"))); //new code
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now Listening on ${PORT}`));

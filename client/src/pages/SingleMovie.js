@@ -3,11 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
+import auth from "../utils/auth";
 
 const SingleMovie = () => {
   //   get user email and username from token
-  const email = Auth.getProfile().data.email;
-  const username = Auth.getProfile().data.username;
+  if (Auth.loggedIn()) {
+    const email = Auth.getProfile().data.email;
+    const username = Auth.getProfile().data.username;
+  }
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");
@@ -40,9 +43,9 @@ const SingleMovie = () => {
     console.log(userId);
   }, [email]);
 
-  console.log(email);
+  // console.log(email);
   console.log(movie);
-  console.log(username);
+  // console.log(username);
 
   // add movie to users movies
   const addMovie = async () => {
@@ -119,7 +122,7 @@ const SingleMovie = () => {
             <div className=" flex justify-center py-2">
               {Auth.loggedIn() && (
                 <button
-                  className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800 md:mt-0 mt-2 md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
+                  className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
                   onClick={addMovie}
                   type="button"
                 >

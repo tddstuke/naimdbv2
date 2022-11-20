@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
-import auth from "../utils/auth";
 
 const SingleShow = () => {
   if (Auth.loggedIn()) {

@@ -11,10 +11,7 @@ const SingleMovie = () => {
     const email = Auth.getProfile().data.email;
     const username = Auth.getProfile().data.username;
   }
-  //else {
-  //   const email = "";
-  //   const username = "";
-  // }
+
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");

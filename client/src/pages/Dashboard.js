@@ -95,8 +95,9 @@ const Dashboard = () => {
         // movie_id: e.target.id,
         // user_id: userId,
       });
+      setMovieIds(movieIds.filter((id) => id !== e.target.id));
 
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +112,8 @@ const Dashboard = () => {
         // movie_id: e.target.id,
         // user_id: userId,
       });
-      window.location.reload();
+      setShowIds(showIds.filter((id) => id !== e.target.id));
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }

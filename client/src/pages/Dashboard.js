@@ -54,37 +54,44 @@ const Dashboard = () => {
   // retrieve user movies using movieIds from TMDB
   useEffect(() => {
     const getMovies = async () => {
-      try {
-        const data = movieIds.map(async (movieId) => {
-          const movieData = await http.get(`dashboard/movies/${movieId}`);
-          return movieData.data;
-        });
-        const movieArray = await Promise.all(data);
-        console.log(movieArray);
-        // console.log(data);
-        setMovies(movieArray);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const getShows = async () => {
-      try {
-        const data = showIds.map(async (showId) => {
-          const showData = await http.get(`dashboard/shows/${showId}`);
-          return showData.data;
-        });
-        const showArray = await Promise.all(data);
-        console.log(showArray);
-        // console.log(data);
-        setShows(showArray);
-      } catch (error) {
-        console.log(error);
+      if (movieIds) {
+        try {
+          const data = movieIds.map(async (movieId) => {
+            const movieData = await http.get(`dashboard/movies/${movieId}`);
+            return movieData.data;
+          });
+          const movieArray = await Promise.all(data);
+          console.log(movieArray);
+          // console.log(data);
+          setMovies(movieArray);
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
     getMovies();
+  }, [movieIds]);
+
+  useEffect(() => {
+    const getShows = async () => {
+      if (showIds) {
+        console.log("working");
+        try {
+          const data = showIds.map(async (showId) => {
+            const showData = await http.get(`dashboard/shows/${showId}`);
+            return showData.data;
+          });
+          const showArray = await Promise.all(data);
+          console.log(showArray);
+          // console.log(data);
+          setShows(showArray);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
     getShows();
-  }, [movieIds, showIds]);
+  }, [showIds]);
 
   // remove movie from user's movies
   const deleteMovie = async (e) => {
@@ -95,12 +102,14 @@ const Dashboard = () => {
         // movie_id: e.target.id,
         // user_id: userId,
       });
-
-      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
-    setMovieIds(movieIds.filter((id) => id !== e.target.id));
+    // const newMovieIds = movieIds.filter((id) => id !== e.target.id) || [];
+    // console.log(newMovieIds);
+    // setMovieIds(...newMovieIds);
+    // window.location.reload();
+    document.location.reload(true);
   };
 
   // remove show from user's shows
@@ -116,11 +125,18 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error);
     }
-    setShowIds(showIds.filter((id) => id !== e.target.id));
+    // setShowIds(showIds.filter((id) => id !== e.target.id));
+    // let index = showIds.indexOf(e.target.id);
+    // if (index !== -1) {
+    //   showIds.splice(index, 1);
+    //   setShowIds(...showIds);
+    // }
+    // console.log(showIds);
+    document.location.reload(true);
   };
 
-  console.log(movies);
-  console.log(shows);
+  console.log(movieIds);
+  console.log(showIds);
 
   return (
     <>

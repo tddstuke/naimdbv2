@@ -5,40 +5,35 @@ import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
 
 const SingleShow = () => {
-  if (Auth.loggedIn()) {
-    const email = Auth.getProfile().data.email;
-    const username = Auth.getProfile().data.username;
-  }
+  // get user email and username from token
+  const email = Auth.getProfile().data.email || "";
+  const username = Auth.getProfile().data.username || "";
+
   const key = process.env.REACT_APP_API_KEY;
   const { id: showId } = useParams();
   const [show, setShow] = useState("");
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState("");
+  // const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     http.get(`/home/showid/${showId}`).then((data) => {
       setShow(data.data);
     });
-
-    // setEmail(Auth.getProfile().data.email);
-    // setUsername(Auth.getProfile().data.username);
   }, [showId]);
 
   useEffect(() => {
     const getUser = async () => {
-      if (email) {
-        try {
-          const idData = await http.get(`/users/${email}`);
-          console.log(idData.data);
-          setUserId(idData.data);
-        } catch (error) {
-          console.log(error);
-        }
+      try {
+        const idData = await http.get(`/users/${email}`);
+        console.log(idData.data);
+        setUserId(idData.data);
+      } catch (error) {
+        console.log(error);
       }
-      getUser();
     };
+    getUser();
   }, [email]);
 
   console.log(showId);
@@ -52,9 +47,6 @@ const SingleShow = () => {
       console.log(data);
       console.log("show added");
       navigate(`/dashboard/${username}`);
-      // setEmail("");
-      // setMovie("");
-      // setUserId("");
     } catch (error) {
       console.log(error);
     }

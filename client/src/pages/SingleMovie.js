@@ -3,21 +3,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
-import auth from "../utils/auth";
 
 const SingleMovie = () => {
   //   get user email and username from token
-  if (Auth.loggedIn()) {
-    const email = Auth.getProfile().data.email;
-    const username = Auth.getProfile().data.username;
-  }
-
+  const email = Auth.getProfile().data.email || "";
+  const username = Auth.getProfile().data.username || "";
+  // console.log(email, username);
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");
-  const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
-  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   // get movie data on load
@@ -25,30 +20,25 @@ const SingleMovie = () => {
     http.get(`/home/movieid/${movieId}`).then((data) => {
       setMovie(data.data);
     });
-    // setEmail(Auth.getProfile().data.email);
-    // setUsername(Auth.getProfile().data.username);
-    // get user info using email
   }, [movieId]);
 
   useEffect(() => {
     const getUser = async () => {
-      if (email) {
-        try {
-          const idData = await http.get(`/users/${email}`);
-          console.log(idData.data);
-          setUserId(idData.data);
-        } catch (error) {
-          console.log(error);
-        }
+      try {
+        const idData = await http.get(`/users/${email}`);
+        console.log(idData.data);
+        setUserId(idData.data);
+      } catch (error) {
+        console.log(error);
       }
-      getUser();
-      console.log(userId);
     };
+    getUser();
+    console.log(userId);
   }, [email]);
 
-  // console.log(email);
+  console.log(email);
   console.log(movie);
-  // console.log(username);
+  console.log(username);
 
   // add movie to users movies
   const addMovie = async () => {
@@ -60,9 +50,6 @@ const SingleMovie = () => {
       console.log(data);
       console.log("movie added");
       navigate(`/dashboard/${username}`);
-      // setEmail("");
-      // setMovie("");
-      // setUserId("");
     } catch (error) {
       console.log(error);
     }

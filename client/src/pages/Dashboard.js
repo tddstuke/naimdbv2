@@ -95,12 +95,12 @@ const Dashboard = () => {
         // movie_id: e.target.id,
         // user_id: userId,
       });
-      setMovieIds(movieIds.filter((id) => id !== e.target.id));
 
       // window.location.reload();
     } catch (error) {
       console.log(error);
     }
+    setMovieIds(movieIds.filter((id) => id !== e.target.id));
   };
 
   // remove show from user's shows
@@ -112,11 +112,11 @@ const Dashboard = () => {
         // movie_id: e.target.id,
         // user_id: userId,
       });
-      setShowIds(showIds.filter((id) => id !== e.target.id));
       // window.location.reload();
     } catch (error) {
       console.log(error);
     }
+    setShowIds(showIds.filter((id) => id !== e.target.id));
   };
 
   console.log(movies);

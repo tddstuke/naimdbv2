@@ -76,7 +76,7 @@ function NavBar() {
               </li>
             </ul>
 
-            <div className="mt-3 space-y-2 md:hidden md:inline-block">
+            <div className="mt-3 space-y-2 md:hidden ">
               {Auth.loggedIn() ? (
                 <a
                   onClick={Auth.logout}
@@ -86,18 +86,18 @@ function NavBar() {
                 </a>
               ) : (
                 <>
-                  <a
-                    href="/login"
+                  <Link
+                    to="/login"
                     className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
                   >
                     Sign in
-                  </a>
-                  <a
-                    href="/signup"
+                  </Link>
+                  <Link
+                    to="/signup"
                     className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
                   >
                     Sign up
-                  </a>
+                  </Link>
                 </>
               )}
             </div>
@@ -113,18 +113,18 @@ function NavBar() {
             </a>
           ) : (
             <>
-              <a
-                href="/login"
+              <Link
+                to="/login"
                 className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
               >
                 Sign in
-              </a>
-              <a
-                href="/signup"
+              </Link>
+              <Link
+                to="/signup"
                 className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
               >
                 Sign up
-              </a>
+              </Link>
             </>
           )}
         </div>

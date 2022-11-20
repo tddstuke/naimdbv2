@@ -36,8 +36,9 @@ const SignUp = () => {
         console.log(error);
         alert(error.response.data.message);
       }
+    } else {
+      alert("Password must match Confirm Password");
     }
-    alert("Password must match Confirm Password");
 
     e.target.reset();
   };

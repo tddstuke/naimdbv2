@@ -144,15 +144,17 @@ const Dashboard = () => {
     document.location.reload(true);
   };
 
-  // console.log(movieIds);
+  console.log(movies);
   // console.log(showIds);
 
   return (
     <>
-      {/* {console.log(me)} */}
-      <h1 className="text-xl uppercase text-center mt-4">
-        {username}'s Movies
-      </h1>
+      {movies !== [] && (
+        <h1 className="text-xl uppercase text-center mt-4">
+          {username}'s Movies
+        </h1>
+      )}
+
       <div className="flex max-w-full md:justify-around justify-center flex-wrap">
         {movies.map((movie) => (
           <div

@@ -64,9 +64,9 @@ function NavBar() {
               </li>
               {Auth.loggedIn() && (
                 <li className="text-white hover:text-indigo-200">
-                  <a href={`/dashboard/${Auth.getProfile().data.username}`}>
+                  <Link to={`/dashboard/${Auth.getProfile().data.username}`}>
                     Dashboard
-                  </a>
+                  </Link>
                 </li>
               )}
               <li className="text-white hover:text-indigo-200">

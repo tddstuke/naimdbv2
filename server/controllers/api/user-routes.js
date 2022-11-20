@@ -25,7 +25,22 @@ router.get("/:email", async (req, res) => {
       },
     });
     res.json(userData.dataValues.id);
-    console.log(userData.dataValues.id);
+    // console.log(userData.dataValues.id);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.get("/id/:id", async (req, res) => {
+  try {
+    const userData = await User.findOne({
+      attributes: { exclude: ["password"] },
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.json(userData);
+    // console.log(userData);
   } catch (e) {
     console.log(e);
   }

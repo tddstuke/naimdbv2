@@ -1,38 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import http from "../http-common";
-// import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
 import { TiDeleteOutline } from "react-icons/ti";
 
 const Dashboard = () => {
-  const { username } = useParams();
+  const { userId } = useParams();
   const email = Auth.getProfile().data.email;
-  // const [email, setEmail] = useState("");
-  const [userId, setUserId] = useState("");
+  const [loggedInId, setLoggedInId] = useState("");
+  const [me, setMe] = useState(false);
+  const [username, setUsername] = useState("");
   const [movieIds, setMovieIds] = useState([]);
   const [movies, setMovies] = useState([]);
   const [showIds, setShowIds] = useState([]);
   const [shows, setShows] = useState([]);
-  const navigate = useNavigate();
 
-  //   get user email on load
+  //   get username from userId params
   useEffect(() => {
-    // setEmail(Auth.getProfile().data.email);
-  }, []);
+    try {
+      const getUser = async () => {
+        const data = await http.get(`/users/id/${userId}`);
+        // console.log(data);
+        setUsername(data.data.username);
+      };
+      getUser();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [userId]);
 
   //   once email is set use it to retrieve userId
   useEffect(() => {
     try {
       const getUser = async () => {
         const data = await http.get(`/users/${email}`);
-        setUserId(data.data);
+        // console.log(data.data);
+        setLoggedInId(data.data);
       };
       getUser();
     } catch (error) {
       console.log(error);
     }
   }, [email]);
+
+  useEffect(() => {
+    if (parseInt(userId) === loggedInId) {
+      setMe(true);
+    }
+    // console.log(me, loggedInId, parseInt(userId));
+  }, [userId, loggedInId]);
 
   //   retrieve movieIds using userId
   useEffect(() => {
@@ -50,7 +66,7 @@ const Dashboard = () => {
     getMovieIds();
   }, [userId]);
 
-  console.log(showIds);
+  // console.log(showIds);
   // retrieve user movies using movieIds from TMDB
   useEffect(() => {
     const getMovies = async () => {
@@ -61,7 +77,7 @@ const Dashboard = () => {
             return movieData.data;
           });
           const movieArray = await Promise.all(data);
-          console.log(movieArray);
+          // console.log(movieArray);
           // console.log(data);
           setMovies(movieArray);
         } catch (error) {
@@ -75,14 +91,13 @@ const Dashboard = () => {
   useEffect(() => {
     const getShows = async () => {
       if (showIds) {
-        console.log("working");
         try {
           const data = showIds.map(async (showId) => {
             const showData = await http.get(`dashboard/shows/${showId}`);
             return showData.data;
           });
           const showArray = await Promise.all(data);
-          console.log(showArray);
+          // console.log(showArray);
           // console.log(data);
           setShows(showArray);
         } catch (error) {
@@ -98,10 +113,7 @@ const Dashboard = () => {
     e.preventDefault();
     console.log(e.target.id);
     try {
-      const data = await http.delete(`/movies/${e.target.id}/${userId}`, {
-        // movie_id: e.target.id,
-        // user_id: userId,
-      });
+      const data = await http.delete(`/movies/${e.target.id}/${userId}`, {});
     } catch (error) {
       console.log(error);
     }
@@ -117,10 +129,7 @@ const Dashboard = () => {
     e.preventDefault();
     console.log(e.target.id);
     try {
-      const data = await http.delete(`/shows/${e.target.id}/${userId}`, {
-        // movie_id: e.target.id,
-        // user_id: userId,
-      });
+      const data = await http.delete(`/shows/${e.target.id}/${userId}`, {});
       // window.location.reload();
     } catch (error) {
       console.log(error);
@@ -135,11 +144,12 @@ const Dashboard = () => {
     document.location.reload(true);
   };
 
-  console.log(movieIds);
-  console.log(showIds);
+  // console.log(movieIds);
+  // console.log(showIds);
 
   return (
     <>
+      {/* {console.log(me)} */}
       <h1 className="text-xl uppercase text-center mt-4">
         {username}'s Movies
       </h1>
@@ -160,11 +170,13 @@ const Dashboard = () => {
               </div>
             </Link>
             <div className="flex justify-center pb-3">
-              <TiDeleteOutline
-                className="cursor-pointer"
-                id={movie.id}
-                onClick={deleteMovie}
-              />
+              {me && (
+                <TiDeleteOutline
+                  className="cursor-pointer"
+                  id={movie.id}
+                  onClick={deleteMovie}
+                />
+              )}
             </div>
           </div>
         ))}
@@ -187,11 +199,13 @@ const Dashboard = () => {
               </div>
             </Link>
             <div className="flex justify-center pb-3">
-              <TiDeleteOutline
-                className="cursor-pointer"
-                id={show.id}
-                onClick={deleteShow}
-              />
+              {me && (
+                <TiDeleteOutline
+                  className="cursor-pointer"
+                  id={show.id}
+                  onClick={deleteShow}
+                />
+              )}
             </div>
           </div>
         ))}

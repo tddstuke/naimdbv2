@@ -7,27 +7,31 @@ import Auth from "../utils/auth";
 const SingleShow = () => {
   // get user email and username from token
   const email = Auth.getProfile().data.email || "";
-  const username = Auth.getProfile().data.username || "";
 
   const key = process.env.REACT_APP_API_KEY;
   const { id: showId } = useParams();
   const [show, setShow] = useState("");
-  // const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
-  // const [username, setUsername] = useState("");
+  const [isInShows, setIsInShows] = useState(false);
   const navigate = useNavigate();
 
+  // get show data on load
   useEffect(() => {
-    http.get(`/home/showid/${showId}`).then((data) => {
-      setShow(data.data);
-    });
+    try {
+      http.get(`/home/showid/${showId}`).then((data) => {
+        setShow(data.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }, [showId]);
 
+  // get user Id
   useEffect(() => {
     const getUser = async () => {
       try {
         const idData = await http.get(`/users/${email}`);
-        console.log(idData.data);
+        // console.log(idData.data);
         setUserId(idData.data);
       } catch (error) {
         console.log(error);
@@ -36,7 +40,18 @@ const SingleShow = () => {
     getUser();
   }, [email]);
 
-  console.log(showId);
+  // check if show is alreadty in user Shows
+  useEffect(() => {
+    const getShowIds = async () => {
+      const { data } = await http.get(`/dashboard/showids/${userId}`);
+      const show_ids = data.map((data) => data.show_id);
+      console.log(show_ids, showId);
+      const isInShows = show_ids.includes(parseInt(showId));
+      setIsInShows(isInShows);
+    };
+    getShowIds();
+  }, [userId, showId]);
+  // console.log(showId);
 
   const addShow = async () => {
     try {
@@ -46,7 +61,7 @@ const SingleShow = () => {
       });
       console.log(data);
       console.log("show added");
-      navigate(`/dashboard/${username}`);
+      navigate(`/dashboard/${userId}`);
     } catch (error) {
       console.log(error);
     }
@@ -58,16 +73,11 @@ const SingleShow = () => {
   if (isLoading) {
     return <div>loading...</div>;
   }
-  const stream = data.results.US.flatrate;
-
+  const stream = data.results.US?.flatrate;
   return (
     <>
       <div className="flex max-w-full md:justify-around justify-center flex-wrap ">
-        <div
-          // key={movie.id}
-          // onClick={clickMovie}
-          className="md:w-4/5 m-4 rounded overflow-hidden md:shadow-2xl  justify-center md:flex"
-        >
+        <div className="md:w-4/5 m-4 rounded overflow-hidden md:shadow-2xl  justify-center md:flex">
           <div className="p-3 justify-center flex md:w-1/2">
             <img
               id={show.id}
@@ -105,7 +115,7 @@ const SingleShow = () => {
               </li>
             </ul>
             <div className=" flex justify-center">
-              {Auth.loggedIn() && (
+              {Auth.loggedIn() && !isInShows && (
                 <button
                   className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
                   onClick={addShow}

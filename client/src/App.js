@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import NavBar from "./components/Header";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/movieid/:id" element={<SingleMovie />} />
           <Route path="/showid/:id" element={<SingleShow />} />
-          <Route path="/dashboard/:username" element={<Dashboard />} />
+          <Route path="/dashboard/:userId" element={<Dashboard />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
         </Routes>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import http from "../../http-common";
 
 const SearchBar = () => {
@@ -18,10 +18,15 @@ const SearchBar = () => {
 
   const handleMovieSubmit = async (event) => {
     event.preventDefault();
-    const data = await http.get(`/home/moviename/${movieTitle}`);
-    // console.log(data.data.results[0].id);
-    setMovieId(data.data.results[0].id);
-    // console.log(movieId);
+    try {
+      const data = await http.get(`/home/moviename/${movieTitle}`);
+      setMovieId(data.data.results[0].id);
+    } catch (error) {
+      console.log(error);
+      alert("Sorry! No movie found with this title");
+    }
+
+    console.log(movieId);
     setMovieTitle("");
   };
 
@@ -34,9 +39,14 @@ const SearchBar = () => {
 
   const handleShowSubmit = async (event) => {
     event.preventDefault();
-    const data = await http.get(`/home/showname/${showTitle}`);
-    console.log(data.data.results[0].id);
-    setShowId(data.data.results[0].id);
+    try {
+      const data = await http.get(`/home/showname/${showTitle}`);
+      console.log(data.data.results[0].id);
+      setShowId(data.data.results[0].id);
+    } catch (error) {
+      console.log(error);
+      alert("Sorry! No show found with that title");
+    }
     // console.log(movieId);
     setShowTitle("");
   };

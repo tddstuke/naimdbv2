@@ -8,37 +8,59 @@ const SingleMovie = () => {
   //   get user email and username from token
   const email = Auth.getProfile().data.email || "";
   const username = Auth.getProfile().data.username || "";
-  // console.log(email, username);
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");
   const [userId, setUserId] = useState("");
+  const [isInMovies, setIsInMovies] = useState(false);
   const navigate = useNavigate();
-
-  // get movie data on load
-  useEffect(() => {
-    http.get(`/home/movieid/${movieId}`).then((data) => {
-      setMovie(data.data);
-    });
-  }, [movieId]);
 
   useEffect(() => {
     const getUser = async () => {
       try {
         const idData = await http.get(`/users/${email}`);
-        console.log(idData.data);
+        // console.log(idData.data);
         setUserId(idData.data);
       } catch (error) {
         console.log(error);
       }
     };
     getUser();
-    console.log(userId);
   }, [email]);
 
-  console.log(email);
-  console.log(movie);
-  console.log(username);
+  // get movie data on load
+  useEffect(() => {
+    try {
+      http.get(`/home/movieid/${movieId}`).then((data) => {
+        setMovie(data.data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, [movieId, userId]);
+
+  // check if movie is alreadty in user Movies
+  useEffect(() => {
+    const getMovieIds = async () => {
+      try {
+        if (userId) {
+          const { data } = await http.get(`/dashboard/movieids/${userId}`);
+          const movie_ids = data.map((data) => data.movie_id);
+
+          const isInMovies = movie_ids.includes(parseInt(movieId));
+          setIsInMovies(isInMovies);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMovieIds();
+  }, [userId, movieId]);
+
+  // console.log(email);
+  // console.log(movie);
+  // console.log(userId);
+  // console.log(isInMovies);
 
   // add movie to users movies
   const addMovie = async () => {
@@ -49,7 +71,7 @@ const SingleMovie = () => {
       });
       console.log(data);
       console.log("movie added");
-      navigate(`/dashboard/${username}`);
+      navigate(`/dashboard/${userId}`);
     } catch (error) {
       console.log(error);
     }
@@ -110,7 +132,7 @@ const SingleMovie = () => {
               </li>
             </ul>
             <div className=" flex justify-center py-2">
-              {Auth.loggedIn() && (
+              {Auth.loggedIn() && !isInMovies && (
                 <button
                   className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
                   onClick={addMovie}

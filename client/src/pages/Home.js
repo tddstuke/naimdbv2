@@ -8,7 +8,7 @@ const Home = () => {
   useEffect(() => {
     const getMovies = async () => {
       const data = await http.get("/home");
-      console.log(data.data);
+      // console.log(data.data);
       setMovies(data.data);
     };
     getMovies();

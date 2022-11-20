@@ -13,7 +13,7 @@ router.get("/movieids/:id", async (req, res) => {
     const data = await Movie.findAll({
       where: { user_id: req.params.id },
     });
-    console.log(data);
+    // console.log(data);
     res.json(data);
   } catch (error) {
     console.log(error);
@@ -26,7 +26,7 @@ router.get("/showids/:id", async (req, res) => {
     const data = await Show.findAll({
       where: { user_id: req.params.id },
     });
-    console.log(data);
+    // console.log(data);
     res.json(data);
   } catch (error) {
     console.log(error);
@@ -37,9 +37,9 @@ router.get("/showids/:id", async (req, res) => {
 // fetch movies from TMDB using movie_ids
 router.get("/movies/:movie_id", async (req, res) => {
   try {
-    console.log(req.params);
+    // console.log(req.params);
     const { data } = await FetchByID(req.params.movie_id);
-    console.log(data);
+    // console.log(data);
     res.json(data);
   } catch (err) {
     console.log(err);
@@ -49,9 +49,9 @@ router.get("/movies/:movie_id", async (req, res) => {
 
 router.get("/shows/:show_id", async (req, res) => {
   try {
-    console.log(req.params);
+    // console.log(req.params);
     const { data } = await FetchByShowID(req.params.show_id);
-    console.log(data);
+    // console.log(data);
     res.json(data);
   } catch (err) {
     console.log(err);

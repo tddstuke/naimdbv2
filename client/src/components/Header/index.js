@@ -1,10 +1,30 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import Auth from "../../utils/auth";
+import http from "../../http-common";
 
 function NavBar() {
   const [navbar, setNavbar] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const getUser = async () => {
+      if (Auth.loggedIn()) {
+        setEmail(Auth.getProfile().data.email || "");
+      }
+
+      try {
+        const idData = await http.get(`/users/${email}`);
+        // console.log(idData.data);
+        setUserId(idData.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUser();
+  }, [email]);
 
   return (
     <nav className="w-full bg-black shadow">
@@ -12,7 +32,7 @@ function NavBar() {
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block">
             <a href="/">
-              <img src={logo} className="h-10" />
+              <img src={logo} alt="NAIMDB logo" className="h-10" />
             </a>
             <div className="md:hidden">
               <button
@@ -64,9 +84,7 @@ function NavBar() {
               </li>
               {Auth.loggedIn() && (
                 <li className="text-white hover:text-indigo-200">
-                  <Link to={`/dashboard/${Auth.getProfile().data.username}`}>
-                    Dashboard
-                  </Link>
+                  <Link to={`/dashboard/${userId}`}>Dashboard</Link>
                 </li>
               )}
               <li className="text-white hover:text-indigo-200">
@@ -79,12 +97,13 @@ function NavBar() {
 
             <div className="mt-3 space-y-2 md:hidden ">
               {Auth.loggedIn() ? (
-                <a
+                <Link
+                  to="/"
                   onClick={Auth.logout}
                   className="inline-block w-full px-4 py-2 text-center text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
                 >
                   Sign out
-                </a>
+                </Link>
               ) : (
                 <>
                   <Link
@@ -106,12 +125,13 @@ function NavBar() {
         </div>
         <div className="hidden space-x-2 md:inline-block">
           {Auth.loggedIn() ? (
-            <a
+            <Link
+              to="/"
               onClick={Auth.logout}
               className="px-4 py-2 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800"
             >
               Sign out
-            </a>
+            </Link>
           ) : (
             <>
               <Link

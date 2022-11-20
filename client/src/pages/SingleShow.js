@@ -3,16 +3,19 @@ import { useParams, useNavigate } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
+import auth from "../utils/auth";
 
 const SingleShow = () => {
-  const email = Auth.getProfile().data.email;
-  const username = Auth.getProfile().data.username;
+  if (Auth.loggedIn()) {
+    const email = Auth.getProfile().data.email;
+    const username = Auth.getProfile().data.username;
+  }
   const key = process.env.REACT_APP_API_KEY;
   const { id: showId } = useParams();
   const [show, setShow] = useState("");
-  // const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
-  // const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,15 +29,17 @@ const SingleShow = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      try {
-        const idData = await http.get(`/users/${email}`);
-        console.log(idData.data);
-        setUserId(idData.data);
-      } catch (error) {
-        console.log(error);
+      if (email) {
+        try {
+          const idData = await http.get(`/users/${email}`);
+          console.log(idData.data);
+          setUserId(idData.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
+      getUser();
     };
-    getUser();
   }, [email]);
 
   console.log(showId);

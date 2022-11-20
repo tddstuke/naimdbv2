@@ -10,16 +10,17 @@ const SingleMovie = () => {
   if (Auth.loggedIn()) {
     const email = Auth.getProfile().data.email;
     const username = Auth.getProfile().data.username;
-  } else {
-    const email = "";
-    const username = "";
   }
+  //else {
+  //   const email = "";
+  //   const username = "";
+  // }
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");
-  // const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
-  // const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
   // get movie data on load
@@ -34,16 +35,18 @@ const SingleMovie = () => {
 
   useEffect(() => {
     const getUser = async () => {
-      try {
-        const idData = await http.get(`/users/${email}`);
-        console.log(idData.data);
-        setUserId(idData.data);
-      } catch (error) {
-        console.log(error);
+      if (email) {
+        try {
+          const idData = await http.get(`/users/${email}`);
+          console.log(idData.data);
+          setUserId(idData.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
+      getUser();
+      console.log(userId);
     };
-    getUser();
-    console.log(userId);
   }, [email]);
 
   // console.log(email);

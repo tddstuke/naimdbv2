@@ -149,7 +149,7 @@ const Dashboard = () => {
 
   return (
     <>
-      {movies !== [] && (
+      {movies.length > 0 && (
         <h1 className="text-xl uppercase text-center mt-4">
           {username}'s Movies
         </h1>
@@ -183,7 +183,11 @@ const Dashboard = () => {
           </div>
         ))}
       </div>
-      <h1 className="text-xl uppercase text-center mt-4">{username}'s Shows</h1>
+      {shows.length > 0 && (
+        <h1 className="text-xl uppercase text-center mt-4">
+          {username}'s Shows
+        </h1>
+      )}
       <div className="flex max-w-full md:justify-around justify-center flex-wrap">
         {shows.map((show) => (
           <div

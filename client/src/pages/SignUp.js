@@ -10,6 +10,7 @@ const SignUp = () => {
     username: "",
     email: "",
     password: "",
+    password_confirmation: "",
   });
 
   const handleChange = (e) => {
@@ -19,20 +20,24 @@ const SignUp = () => {
       ...formState,
       [name]: value,
     });
+    console.log(name, value);
   };
 
   const handleFormSubmit = async (e) => {
     console.log(formState);
     e.preventDefault();
-    try {
-      const data = await http.post("/users", formState);
-      Auth.login(data.data.token);
-      setLoggedIn(true);
-      console.log(data.data.token);
-    } catch (error) {
-      console.log(error);
-      alert(error.response.data.message);
+    if (formState.password === formState.password_confirmation) {
+      try {
+        const data = await http.post("/users", formState);
+        Auth.login(data.data.token);
+        setLoggedIn(true);
+        console.log(data.data.token);
+      } catch (error) {
+        console.log(error);
+        alert(error.response.data.message);
+      }
     }
+    alert("Password must match Confirm Password");
 
     e.target.reset();
   };
@@ -79,7 +84,6 @@ const SignUp = () => {
             <input
               type="email"
               name="email"
-              //   value={formState.email}
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-4 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
               onChange={handleChange}
             />
@@ -114,7 +118,7 @@ const SignUp = () => {
               type="password"
               name="password_confirmation"
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-              //   onChange={handleChange}
+              onChange={handleChange}
             />
           </div>
         </div>

@@ -117,11 +117,9 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error);
     }
-    // const newMovieIds = movieIds.filter((id) => id !== e.target.id) || [];
-    // console.log(newMovieIds);
-    // setMovieIds(...newMovieIds);
-    // window.location.reload();
-    document.location.reload(true);
+    // filter ids to remove deleted movie
+    setMovieIds(movieIds.filter((id) => id !== parseInt(e.target.id)));
+    console.log(movieIds);
   };
 
   // remove show from user's shows
@@ -134,17 +132,12 @@ const Dashboard = () => {
     } catch (error) {
       console.log(error);
     }
-    // setShowIds(showIds.filter((id) => id !== e.target.id));
-    // let index = showIds.indexOf(e.target.id);
-    // if (index !== -1) {
-    //   showIds.splice(index, 1);
-    //   setShowIds(...showIds);
-    // }
-    // console.log(showIds);
-    document.location.reload(true);
+    // filter ids to remove deleted show
+    setShowIds(showIds.filter((id) => id !== parseInt(e.target.id)));
   };
 
   console.log(movies);
+  console.log(movieIds);
   // console.log(showIds);
 
   return (

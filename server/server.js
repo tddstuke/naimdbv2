@@ -10,6 +10,7 @@ const corsOptions = {
   origin: [
     "http://localhost:3000",
     "https://agile-springs-04238.herokuapp.com/",
+    // "https://naimdb.herokuapp.com/",
   ],
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
@@ -23,10 +24,11 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
 
+app.use(routes);
+
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
-app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now Listening on ${PORT}`));

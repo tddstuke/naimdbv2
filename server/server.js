@@ -19,11 +19,11 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/api", routes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../client/build")));
 }
-app.use("/api", routes);
 
 app.use("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));

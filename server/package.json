@@ -17,6 +17,7 @@
     "seed": "node seeders/seeds.js"
   },
   "name": "server",
+  "homepage": "https://naimdb.herokuapp.com/",
   "version": "1.0.0",
   "main": "server.js",
   "author": "",

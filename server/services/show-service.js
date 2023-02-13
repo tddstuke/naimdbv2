@@ -1,6 +1,6 @@
 const axios = require("axios");
 // require("dotenv").config();
-const apiUrl = "https://api.themoviedb.org/3/search/tv/?api_key=";
+const apiUrl = "https://api.themoviedb.org/3/search/tv?api_key=";
 const byIdUrl = "https://api.themoviedb.org/3/tv/";
 const trendingUrl = "https://api.themoviedb.org/3/trending/tv/day";
 

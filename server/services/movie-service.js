@@ -1,5 +1,5 @@
 const axios = require("axios");
-const apiUrl = "https://api.themoviedb.org/3/search/movie/?api_key=";
+const apiUrl = "https://api.themoviedb.org/3/search/movie?api_key=";
 const byIdUrl = "https://api.themoviedb.org/3/movie/";
 const trendingUrl = "https://api.themoviedb.org/3/trending/movie/day";
 

@@ -15,19 +15,29 @@ const Dashboard = () => {
   const [showIds, setShowIds] = useState([]);
   const [shows, setShows] = useState([]);
 
+  useEffect(() => {
+    console.log(Auth.getProfile());
+  }, []);
+
   //   get username from userId params
   useEffect(() => {
     try {
       const getUser = async () => {
         const data = await http.get(`/users/id/${userId}`);
-        // console.log(data);
-        setUsername(data.data.username);
+        Auth.getProfile().data.email != data.data.email
+          ? alertMessage()
+          : setUsername(data.data.username);
       };
       getUser();
     } catch (error) {
       console.log(error);
     }
   }, [userId]);
+
+  function alertMessage() {
+    alert("Must be logged in to view the dashboard");
+    window.location.assign("/login");
+  }
 
   //   once email is set use it to retrieve userId
   useEffect(() => {
@@ -136,8 +146,8 @@ const Dashboard = () => {
     setShowIds(showIds.filter((id) => id !== parseInt(e.target.id)));
   };
 
-  console.log(movies);
-  console.log(movieIds);
+  // console.log(movies);
+  // console.log(movieIds);
   // console.log(showIds);
 
   return (

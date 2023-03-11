@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
 
 const SingleShow = () => {
-  // get user email and username from token
-  const email = Auth.getProfile().data.email || "";
-
   const key = process.env.REACT_APP_API_KEY;
   const { id: showId } = useParams();
+  const [email, setEmail] = useState("");
   const [show, setShow] = useState("");
   const [userId, setUserId] = useState("");
   const [isInShows, setIsInShows] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    Auth.loggedIn() && initializeData(Auth.getProfile().data.email);
+  }, []);
 
   // get show data on load
   useEffect(() => {
@@ -26,32 +28,18 @@ const SingleShow = () => {
     }
   }, [showId]);
 
-  // get user Id
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const idData = await http.get(`/users/${email}`);
-        // console.log(idData.data);
-        setUserId(idData.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUser();
-  }, [email]);
-
-  // check if show is alreadty in user Shows
-  useEffect(() => {
-    const getShowIds = async () => {
-      const { data } = await http.get(`/dashboard/showids/${userId}`);
+  async function initializeData(email) {
+    try {
+      const idData = await http.get(`/users/${email}`);
+      const { data } = await http.get(`/dashboard/showids/${idData.data}`);
       const show_ids = data.map((data) => data.show_id);
-      console.log(show_ids, showId);
-      const isInShows = show_ids.includes(parseInt(showId));
-      setIsInShows(isInShows);
-    };
-    getShowIds();
-  }, [userId, showId]);
-  // console.log(showId);
+      const isInShowsdata = show_ids.includes(parseInt(showId));
+      setIsInShows(isInShowsdata);
+      setUserId(idData.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const addShow = async () => {
     try {
@@ -65,6 +53,17 @@ const SingleShow = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // remove show from user's shows
+  const deleteShow = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await http.delete(`/shows/${showId}/${userId}`);
+    } catch (error) {
+      console.log(error);
+    }
+    window.location.assign(`/dashboard/${userId}`);
   };
 
   const { isLoading, data } = useFetch(
@@ -115,7 +114,7 @@ const SingleShow = () => {
               </li>
             </ul>
             <div className=" flex justify-center">
-              {Auth.loggedIn() && !isInShows && (
+              {Auth.loggedIn() && !isInShows ? (
                 <button
                   className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
                   onClick={addShow}
@@ -123,6 +122,34 @@ const SingleShow = () => {
                 >
                   Add Show
                 </button>
+              ) : Auth.loggedIn && isInShows ? (
+                <button
+                  className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
+                  onClick={deleteShow}
+                  type="button"
+                >
+                  Remove Show
+                </button>
+              ) : (
+                <div>
+                  <p className="text-center">
+                    To add this show to your Dashboard
+                    <br />
+                    <Link
+                      className="underline text-blue-600 hover:text-blue-800"
+                      to="/signup"
+                    >
+                      Sign Up
+                    </Link>{" "}
+                    or{" "}
+                    <Link
+                      className="underline text-blue-600 hover:text-blue-800"
+                      to="/login"
+                    >
+                      Sign In
+                    </Link>{" "}
+                  </p>
+                </div>
               )}
             </div>
           </div>

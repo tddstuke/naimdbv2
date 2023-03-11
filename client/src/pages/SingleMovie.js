@@ -1,32 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import http from "../http-common";
 import useFetch from "react-fetch-hook";
 import Auth from "../utils/auth";
 
 const SingleMovie = () => {
   //   get user email and username from token
-  const email = Auth.getProfile().data.email || "";
-  const username = Auth.getProfile().data.username || "";
+  // const email = Auth.getProfile().data.email || "";
+  // const username = Auth.getProfile().data.username || "";
   const key = process.env.REACT_APP_API_KEY;
   const { id: movieId } = useParams();
   const [movie, setMovie] = useState("");
   const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
   const [isInMovies, setIsInMovies] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const idData = await http.get(`/users/${email}`);
-        // console.log(idData.data);
-        setUserId(idData.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUser();
-  }, [email]);
+    Auth.loggedIn() && initializeData(Auth.getProfile().data.email);
+  }, []);
+
+  async function initializeData(email) {
+    try {
+      const idData = await http.get(`/users/${email}`);
+      const { data } = await http.get(`/dashboard/movieids/${idData.data}`);
+      // console.log(data);
+      const movie_ids = data.map((data) => data.movie_id);
+      // console.log(movie_ids, movieId);
+      const isInMovies = movie_ids.includes(parseInt(movieId));
+      setIsInMovies(isInMovies);
+      // console.log(idData.data);
+      setUserId(idData.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // get movie data on load
   useEffect(() => {
@@ -38,24 +46,6 @@ const SingleMovie = () => {
       console.log(error);
     }
   }, [movieId, userId]);
-
-  // check if movie is alreadty in user Movies
-  useEffect(() => {
-    const getMovieIds = async () => {
-      try {
-        if (userId) {
-          const { data } = await http.get(`/dashboard/movieids/${userId}`);
-          const movie_ids = data.map((data) => data.movie_id);
-
-          const isInMovies = movie_ids.includes(parseInt(movieId));
-          setIsInMovies(isInMovies);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getMovieIds();
-  }, [userId, movieId]);
 
   // console.log(email);
   // console.log(movie);
@@ -75,6 +65,18 @@ const SingleMovie = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // remove movie from user's movies
+  const deleteMovie = async (e) => {
+    e.preventDefault();
+    console.log(movieId);
+    try {
+      const data = await http.delete(`/movies/${movieId}/${userId}`);
+    } catch (error) {
+      console.log(error);
+    }
+    window.location.assign(`/dashboard/${userId}`);
   };
 
   // get streaming information
@@ -132,7 +134,7 @@ const SingleMovie = () => {
               </li>
             </ul>
             <div className=" flex justify-center py-2">
-              {Auth.loggedIn() && !isInMovies && (
+              {Auth.loggedIn() && !isInMovies ? (
                 <button
                   className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
                   onClick={addMovie}
@@ -140,6 +142,34 @@ const SingleMovie = () => {
                 >
                   Add Movie
                 </button>
+              ) : Auth.loggedIn && isInMovies ? (
+                <button
+                  className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/2 w-full"
+                  onClick={deleteMovie}
+                  type="button"
+                >
+                  Remove Movie
+                </button>
+              ) : (
+                <div>
+                  <p className="text-center">
+                    To add this movie to your Dashboard
+                    <br />
+                    <Link
+                      className="underline text-blue-600 hover:text-blue-800"
+                      to="/signup"
+                    >
+                      Sign Up
+                    </Link>{" "}
+                    or{" "}
+                    <Link
+                      className="underline text-blue-600 hover:text-blue-800"
+                      to="/login"
+                    >
+                      Sign In
+                    </Link>{" "}
+                  </p>
+                </div>
               )}
             </div>
           </div>

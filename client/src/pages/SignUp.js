@@ -1,11 +1,9 @@
 import React, { useState, useContext } from "react";
 import logo from "../assets/logo.png";
-import { AuthContext } from "../context/Auth";
 import Auth from "../utils/auth";
 import http from "../http-common";
 
 const SignUp = () => {
-  const { setLoggedIn } = useContext(AuthContext);
   const [formState, setFormState] = useState({
     username: "",
     email: "",
@@ -30,7 +28,6 @@ const SignUp = () => {
       try {
         const data = await http.post("/users", formState);
         Auth.login(data.data.token);
-        setLoggedIn(true);
         console.log(data.data.token);
       } catch (error) {
         console.log(error);

@@ -10,21 +10,18 @@ function NavBar() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    const getUser = async () => {
-      if (Auth.loggedIn()) {
-        setEmail(Auth.getProfile().data.email || "");
-      }
+    // const getUser = async () => {
+    if (Auth.loggedIn()) {
+      setEmail(Auth.getProfile().data.email);
+      getUser(Auth.getProfile().data.email);
+    }
+  }, []);
 
-      try {
-        const idData = await http.get(`/users/${email}`);
-        // console.log(idData.data);
-        setUserId(idData.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUser();
-  }, [email]);
+  async function getUser(email) {
+    const idData = await http.get(`/users/${email}`);
+    // console.log(idData);
+    setUserId(idData.data);
+  }
 
   return (
     <nav className="w-full bg-black shadow">

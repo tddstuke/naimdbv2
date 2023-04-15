@@ -14,10 +14,7 @@ const Dashboard = () => {
   const [movies, setMovies] = useState([]);
   const [showIds, setShowIds] = useState([]);
   const [shows, setShows] = useState([]);
-
-  useEffect(() => {
-    console.log(Auth.getProfile());
-  }, []);
+  const [icon, setIcon] = useState(false);
 
   //   get username from userId params
   useEffect(() => {
@@ -152,8 +149,23 @@ const Dashboard = () => {
 
   return (
     <>
+      <div className="max-w-sm flex flex-wrap justify-around text-center w-full md:w-1/2 mx-auto py-8">
+        <h2 className="w-full text-lg font-bold">Set Icon Size</h2>
+        <button
+          className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/4 w-1/3"
+          onClick={(e) => setIcon(true)}
+        >
+          Small
+        </button>
+        <button
+          className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/4 w-1/3"
+          onClick={(e) => setIcon(false)}
+        >
+          Large
+        </button>
+      </div>
       {movies.length > 0 && (
-        <h1 className="text-xl uppercase text-center mt-4">
+        <h1 className="text-3xl uppercase text-center mt-4 font-bold">
           {username}'s Movies
         </h1>
       )}
@@ -162,22 +174,39 @@ const Dashboard = () => {
         {movies.map((movie) => (
           <div
             key={movie.id}
-            className="md:w-1/5 m-4 rounded overflow-hidden md:shadow-2xl"
+            className={
+              icon
+                ? "justify-around md:w-1/5 w-full m-4 rounded overflow-hidden md:shadow-2xl flex h-20"
+                : "md:w-1/5 w-full m-4 rounded overflow-hidden md:shadow-2xl"
+            }
           >
-            <Link to={`/movieid/${movie.id}`}>
-              <div className="p-3 ">
+            <Link to={`/movieid/${movie.id}`} className={icon ? "w-1/3" : ""}>
+              <div className="p-3">
                 <img
                   id={movie.id}
                   src={`http://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                   alt="selected movie poster"
-                  className="rounded"
+                  className={icon ? "w-1/2 rounded" : "rounded"}
                 />
               </div>
             </Link>
-            <div className="flex justify-center pb-3">
+            <div
+              className={
+                icon ? "font-bold text-center my-auto w-1/3" : "hidden"
+              }
+            >
+              {movie.title}
+            </div>
+            <div
+              className={
+                icon
+                  ? "w-1/3 my-auto"
+                  : "flex w-full justify-center pb-3 my-auto"
+              }
+            >
               {me && (
                 <TiDeleteOutline
-                  className="cursor-pointer"
+                  className="cursor-pointer mx-auto"
                   id={movie.id}
                   onClick={deleteMovie}
                 />
@@ -187,7 +216,7 @@ const Dashboard = () => {
         ))}
       </div>
       {shows.length > 0 && (
-        <h1 className="text-xl uppercase text-center mt-4">
+        <h1 className="text-3xl uppercase text-center mt-4 font-bold">
           {username}'s Shows
         </h1>
       )}
@@ -195,22 +224,39 @@ const Dashboard = () => {
         {shows.map((show) => (
           <div
             key={show.id}
-            className="md:w-1/5 m-4 rounded overflow-hidden md:shadow-2xl"
+            className={
+              icon
+                ? "justify-around md:w-1/5 w-full m-4 rounded overflow-hidden md:shadow-2xl flex h-20"
+                : "md:w-1/5 w-full m-4 rounded overflow-hidden md:shadow-2xl"
+            }
           >
-            <Link to={`/showid/${show.id}`}>
+            <Link to={`/showid/${show.id}`} className={icon ? "w-1/3" : ""}>
               <div className="p-3 ">
                 <img
                   id={show.id}
                   src={`http://image.tmdb.org/t/p/w500/${show.poster_path}`}
                   alt="selected movie poster"
-                  className="rounded"
+                  className={icon ? "w-1/2 rounded" : "rounded"}
                 />
               </div>
             </Link>
-            <div className="flex justify-center pb-3">
+            <div
+              className={
+                icon ? "font-bold text-center my-auto w-1/3" : "hidden"
+              }
+            >
+              {show.name}
+            </div>
+            <div
+              className={
+                icon
+                  ? "w-1/3 my-auto"
+                  : "flex w-full justify-center pb-3 my-auto"
+              }
+            >
               {me && (
                 <TiDeleteOutline
-                  className="cursor-pointer"
+                  className="cursor-pointer mx-auto"
                   id={show.id}
                   onClick={deleteShow}
                 />

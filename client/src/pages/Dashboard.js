@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [movies, setMovies] = useState([]);
   const [showIds, setShowIds] = useState([]);
   const [shows, setShows] = useState([]);
-  const [icon, setIcon] = useState(false);
+  const [icon, setIcon] = useState(true);
 
   //   get username from userId params
   useEffect(() => {
@@ -149,16 +149,16 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="max-w-sm flex flex-wrap justify-around text-center w-full md:w-1/2 mx-auto py-8">
+      <div className="max-w-sm flex flex-wrap justify-center text-center w-full md:w-1/2 mx-auto py-8">
         <h2 className="w-full text-lg font-bold">Set Icon Size</h2>
         <button
-          className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/4 w-1/3"
+          className="px-1 py-1 text-white bg-gray-600  shadow hover:bg-gray-800  focus:bg-gray-800   mt-2  w-1/6"
           onClick={(e) => setIcon(true)}
         >
           Small
         </button>
         <button
-          className="px-4 py-1 text-white bg-gray-600 rounded-md shadow hover:bg-gray-800  md:ml-2 md:mt-0 mt-2 md:w-1/4 w-1/3"
+          className="px-1 py-1 text-white bg-gray-600  shadow hover:bg-gray-800  focus:bg-gray-800 mt-2  w-1/6"
           onClick={(e) => setIcon(false)}
         >
           Large
